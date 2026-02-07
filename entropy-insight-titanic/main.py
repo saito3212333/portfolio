@@ -37,6 +37,20 @@ def load_and_preprocess_data():
 
     return df
 
+@st.cache_data
+def get_loss_history(_X_full, _y_full, sorted_features, max_feat):
+    """
+    Iteratively trains models with increasing numbers of features and caches results.
+    The underscore in '_X_full' tells Streamlit to skip hashing the large dataframe for speed.
+    """
+    history = []
+    # Calculate Cross-Entropy (LogLoss) for 2 to max_feat features
+    for n_feat in range(2, max_feat + 1):
+        # Call the existing training function
+        loss, _, _, _ = train_lgbm_get_loss(_X_full, _y_full, n_feat)
+        history.append(loss)
+    return history
+
 def train_lgbm_get_loss(X, y, num_features):
     # Selecting the Top N correlated features
     top_n_cols = X.columns[:num_features]
@@ -108,30 +122,29 @@ if page == "1. Correlation Analysis":
         st.pyplot(fig_corr)
 
 # --- Page 2: Cross-Entropy Dynamics ---
+# --- Page 2: Cross-Entropy Dynamics ---
 elif page == "2. Cross-Entropy Dynamics":
     st.title("📉 Diminishing Uncertainty: Cross-Entropy Analysis")
     st.markdown("""
-    ### The Core Concept
-    As we add more informative features to our model, the **Cross-Entropy (LogLoss)** should decrease.
-    This indicates that the model is becoming less "surprised" by the actual outcomes and is gaining predictive confidence.
+    ### Concept
+    As we add more informative features, the model's **Cross-Entropy (LogLoss)** should decrease,
+    signifying reduced uncertainty in predictions.
     """)
 
     max_features = min(10, len(sorted_features))
-    num_features_range = list(range(2, max_features + 1))
-    logloss_history = []
-
     X_full = df_processed[sorted_features]
     y_full = df_processed['survived']
 
-    with st.spinner('Iteratively training models...'):
-        for n_feat in num_features_range:
-            loss, _, _, _ = train_lgbm_get_loss(X_full, y_full, n_feat)
-            logloss_history.append(loss)
+    # --- Optimized with Caching ---
+    with st.spinner('Calculating Cross-Entropy Evolution (This might take a moment on first run)...'):
+        # Call the cached function instead of running a loop directly
+        logloss_history = get_loss_history(X_full, y_full, sorted_features, max_features)
+        num_features_range = list(range(2, max_features + 1))
 
     # Visualization
     fig_loss, ax = plt.subplots(figsize=(10, 6))
-    ax.plot(num_features_range, logloss_history, marker='s', linestyle='--', color='#2c3e50')
-    ax.set_title('Cross-Entropy Reduction vs. Number of Features', fontsize=14)
+    ax.plot(num_features_range, logloss_history, marker='o', linestyle='--', color='#2c3e50')
+    ax.set_title('Cross-Entropy Reduction vs. Feature Count', fontsize=14)
     ax.set_xlabel('Number of Top Features Used', fontsize=12)
     ax.set_ylabel('Validation LogLoss (Binary Cross-Entropy)', fontsize=12)
     ax.grid(True, alpha=0.3)
