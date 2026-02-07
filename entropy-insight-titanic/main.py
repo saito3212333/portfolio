@@ -103,23 +103,26 @@ elif page == "2. Cross-Entropy Dynamics":
     """)
 
     # --- Loading Static Pre-computed Results for High Performance ---
-    try:
-        results_df = pd.read_csv('precomputed_loss.csv')
-        num_features_range = results_df['num_features'].tolist()
-        logloss_history = results_df['logloss'].tolist()
 
-        fig_loss, ax = plt.subplots(figsize=(10, 6))
-        ax.plot(num_features_range, logloss_history, marker='o', linestyle='--', color='#2c3e50', linewidth=2)
-        ax.set_title('Validation Cross-Entropy vs. Feature Count', fontsize=14)
-        ax.set_xlabel('Number of Top-Correlated Features Used', fontsize=12)
-        ax.set_ylabel('Log-Loss (Cross-Entropy)', fontsize=12)
-        ax.grid(True, alpha=0.3)
-        st.pyplot(fig_loss)
+    results_df  = pd.DataFrame({
+                'num_features': [2, 3, 4, 5, 6, 7, 8, 9, 10],
+                'logloss': [
+                0.4723870490261505, 0.48740381834300495, 0.4483163354841218,
+                0.44420943569035826, 0.4506194469786456, 0.45152151784640643,
+                0.45152151784640643, 0.45152151784640643, 0.45152151784640643
+            ]})
+    num_features_range = results_df['num_features'].tolist()
+    logloss_history = results_df['logloss'].tolist()
 
-        st.success("**Insight:** The sharpest drops in loss occur when the most significant features are introduced, demonstrating the concept of high Information Gain.")
-    except FileNotFoundError:
-        st.warning("⚠️ Precomputed metrics not found. Please ensure 'precomputed_loss.csv' is uploaded to the repository.")
+    fig_loss, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(num_features_range, logloss_history, marker='o', linestyle='--', color='#2c3e50', linewidth=2)
+    ax.set_title('Validation Cross-Entropy vs. Feature Count', fontsize=14)
+    ax.set_xlabel('Number of Top-Correlated Features Used', fontsize=12)
+    ax.set_ylabel('Log-Loss (Cross-Entropy)', fontsize=12)
+    ax.grid(True, alpha=0.3)
+    st.pyplot(fig_loss)
 
+    st.success("**Insight:** The sharpest drops in loss occur when the most significant features are introduced, demonstrating the concept of high Information Gain.")
 # --- Page 3: Final Model Evaluation ---
 elif page == "3. Final Evaluation & Gain":
     st.title("✅ Model Performance & Interpretability")
