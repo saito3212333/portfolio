@@ -1,0 +1,25 @@
+# Configuration for Survey Analysis Pipeline
+
+paths:
+  # Using relative paths compatible with Pathlib
+  input_raw: "data/raw/survey_sample.csv"
+  output_dir: "data/processed"
+  output_name: "cleaned_survey_data.parquet"
+
+column_settings:
+  # Map long survey questions to clean variable names
+  mapping:
+    "Q1_Please_enter_your_age": "age"
+    "Q2_What_is_your_gender": "gender"
+    "Q3_How_satisfied_are_you_with_our_service": "satisfaction"
+
+cleaning_rules:
+  # Filter criteria for data quality
+  min_completion_time_sec: 30
+  target_column: "satisfaction"
+  age_range: [15, 80]
+
+data_types:
+  # Optimization for memory efficiency
+  categories: ["gender"]
+  integers: ["age", "satisfaction"]
