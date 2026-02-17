@@ -95,7 +95,7 @@ uv run streamlit run app.py
 
 ## 🌐 Live Demo
 
-You can view the interactive dashboard here: **[Insert Streamlit Cloud URL here after deployment]**
+You can view the interactive dashboard here: **https://portfolio-t42zqnbfaic5vxg3gpy749.streamlit.app/**
 
 
 
