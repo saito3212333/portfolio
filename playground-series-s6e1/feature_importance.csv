@@ -1,0 +1,15 @@
+Feature,Importance
+effective_study,0.27580133
+study_hours,0.19526936
+study_method,0.16900621
+sleep_quality,0.12804249
+facility_rating,0.081398554
+study_intensity,0.0687837
+class_attendance,0.037616834
+sleep_efficiency,0.018733473
+sleep_hours,0.015320479
+age,0.0021340721
+course,0.002046583
+gender,0.0020077964
+internet_access,0.0019248262
+exam_difficulty,0.0019144028

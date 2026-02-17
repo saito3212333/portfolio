@@ -1,0 +1,21 @@
+{
+    "Baseline": {
+        "mean_rmse": 8.813227249289335,
+        "std_rmse": 0.013268136511890077
+    },
+    "Feature_Engineering": {
+        "mean_rmse": 8.813843636622561,
+        "std_rmse": 0.012232253726153601
+    },
+    "Optuna_Tuning": {
+        "mean_rmse": 8.758404179926512,
+        "std_rmse": 0.011846866822648565,
+        "best_params": {
+            "n_estimators": 846,
+            "max_depth": 6,
+            "learning_rate": 0.10263250781440304,
+            "subsample": 0.9244044551596694,
+            "colsample_bytree": 0.6082834453086909
+        }
+    }
+}
