@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
+# --- Path Configuration ---
+
 # --- Page Config ---
 st.set_page_config(page_title="ML Journey Tracker", layout="wide", page_icon="🚀")
 
@@ -23,10 +25,13 @@ def load_csv(filepath):
         return pd.read_csv(filepath)
     return None
 
-# --- Load Data ---
-metrics = load_json('model_metrics.json')
-correlations = load_json('eda_correlations.json')
-importance_df = load_csv('feature_importance.csv')
+# app.pyが存在するディレクトリの絶対パスを取得
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# ファイル読み込み部分をBASE_DIRを使って書き換え
+metrics = load_json(os.path.join(BASE_DIR, 'model_metrics.json'))
+correlations = load_json(os.path.join(BASE_DIR, 'eda_correlations.json'))
+importance_df = load_csv(os.path.join(BASE_DIR, 'feature_importance.csv'))
 
 # --- Sidebar Navigation ---
 st.sidebar.title("Navigation 🧭")
